@@ -8,7 +8,7 @@ module.exports = async function handler(req, res) {
     });
 
     const response = await openai.chat.completions.create({
-      model: 'llama3-8b-8192', // <-- Eccolo qui, il modello corretto e sempre attivo!
+      model: 'llama-3.1-8b-instant', // Il modello esatto e attivo preso dalla tua lista
       messages: [
         { role: 'system', content: 'Sei un assistente AI esperto.' },
         { role: 'user', content: 'Dimmi in 3 punti perché usare le variabili di ambiente è una buona prassi.' }
