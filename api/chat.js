@@ -1,12 +1,13 @@
-import OpenAI from 'openai';
+const { OpenAI } = require('openai');
 
-const openai = new OpenAI({
-  baseURL: process.env.AI_BASE_URL,
-  apiKey: process.env.AI_API_KEY,
-});
-
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
   try {
+    // Spostato DENTRO la funzione. Se c'è un errore con la chiave, lo vedremo!
+    const openai = new OpenAI({
+      baseURL: process.env.AI_BASE_URL,
+      apiKey: process.env.AI_API_KEY,
+    });
+
     const response = await openai.chat.completions.create({
       model: 'llama-3.3-70b-versatile',
       messages: [
@@ -15,10 +16,11 @@ export default async function handler(req, res) {
       ],
     });
 
-    // Invia la risposta dell'AI direttamente sulla pagina web
+    // Invia la risposta corretta
     res.status(200).send(response.choices[0].message.content);
     
   } catch (error) {
-    res.status(500).send("Errore durante la chiamata: " + error.message);
+    // Se c'è un errore, ORA lo stampa sulla pagina web invece di bloccarsi in silenzio
+    res.status(500).send("Errore catturato dallo script: " + error.message);
   }
-}
+};
