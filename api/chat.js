@@ -2,10 +2,9 @@ const { OpenAI } = require('openai');
 
 module.exports = async function handler(req, res) {
   try {
-    // Spostato DENTRO la funzione. Se c'è un errore con la chiave, lo vedremo!
     const openai = new OpenAI({
-      baseURL: process.env.AI_BASE_URL,
-      apiKey: process.env.AI_API_KEY,
+      baseURL: 'https://api.groq.com/openai/v1', // Inserito direttamente, non è un dato sensibile
+      apiKey: process.env.AI_API_KEY,            // Solo la chiave rimane protetta in Vercel
     });
 
     const response = await openai.chat.completions.create({
@@ -16,11 +15,10 @@ module.exports = async function handler(req, res) {
       ],
     });
 
-    // Invia la risposta corretta
+    // Invia la risposta finale
     res.status(200).send(response.choices[0].message.content);
     
   } catch (error) {
-    // Se c'è un errore, ORA lo stampa sulla pagina web invece di bloccarsi in silenzio
     res.status(500).send("Errore catturato dallo script: " + error.message);
   }
 };
